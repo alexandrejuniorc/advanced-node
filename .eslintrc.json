@@ -1,13 +1,9 @@
 {
-  "overrides": [
-    {
-      "files": [
-        "*.js",
-        "*.jsx",
-        "*.ts",
-        "*.tsx"
-      ],
-      "extends": "love"
-    }
-  ]
+  "extends": "love",
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "rules": {
+    "@typescript-eslint/no-namespace": "off"
+  }
 }
