@@ -1,41 +1,7 @@
-import { type LoadFacebookUserApi } from '@/data/contracts/apis'
+import { FacebookApi } from '@/infrastructure/apis'
+import { type HttpGetClient } from '@/infrastructure/http'
+
 import { mock, type MockProxy } from 'jest-mock-extended'
-
-class FacebookApi implements LoadFacebookUserApi {
-  private readonly baseUrl = 'https://graph.facebook.com'
-
-  constructor (
-    private readonly httpClient: HttpGetClient,
-    private readonly clientId: string,
-    private readonly clientSecret: string
-  ) {}
-
-  async loadUser (
-    token: LoadFacebookUserApi.Params
-  ): Promise<LoadFacebookUserApi.Result> {
-    await this.httpClient.get({
-      url: `${this.baseUrl}/oauth/access_token`,
-      params: {
-        client_id: this.clientId,
-        client_secret: this.clientSecret,
-        grant_type: 'client_credentials'
-      }
-    })
-
-    return undefined
-  }
-}
-
-interface HttpGetClient {
-  get: (params: HttpGetClient.Params) => Promise<void>
-}
-
-namespace HttpGetClient {
-  export interface Params {
-    url: string
-    params: object
-  }
-}
 
 describe('FacebookApi', () => {
   let clientId: string
