@@ -30,7 +30,7 @@ export class FacebookApi implements LoadFacebookUserApi {
       }
     })
 
-    await this.httpClient.get({
+    const userInfo = await this.httpClient.get({
       url: `${this.baseUrl}/${debugToken.data.user_id}`,
       params: {
         fields: ['id', 'name', 'email'].join(','),
@@ -38,6 +38,10 @@ export class FacebookApi implements LoadFacebookUserApi {
       }
     })
 
-    return undefined
+    return {
+      facebookId: userInfo.id,
+      name: userInfo.name,
+      email: userInfo.email
+    }
   }
 }
