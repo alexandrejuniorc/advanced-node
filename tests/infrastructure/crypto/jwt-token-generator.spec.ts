@@ -9,15 +9,25 @@ class JwtTokenGenerator implements TokenGenerator {
 
   async generateToken (params: TokenGenerator.Params): Promise<string> {
     const expirationInSeconds = params.expirationInMs / 1000
-    return jwt.sign({ key: params.key }, this.secret, { expiresIn: expirationInSeconds })
+    return jwt.sign({ key: params.key }, this.secret, {
+      expiresIn: expirationInSeconds
+    })
   }
 }
 
 describe('JwtTokenGenerator', () => {
-  it('should call sign with correct params', async () => {
-    const fakeJwt = jwt as jest.Mocked<typeof jwt>
-    const sut = new JwtTokenGenerator('any_secret')
+  let sut: JwtTokenGenerator
+  let fakeJwt: jest.Mocked<typeof jwt>
 
+  beforeAll(() => {
+    fakeJwt = jwt as jest.Mocked<typeof jwt>
+  })
+
+  beforeEach(() => {
+    sut = new JwtTokenGenerator('any_secret')
+  })
+
+  it('should call sign with correct params', async () => {
     await sut.generateToken({
       key: 'any_key',
       expirationInMs: 1000
