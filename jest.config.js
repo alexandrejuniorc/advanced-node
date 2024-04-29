@@ -1,33 +1,26 @@
 /** @type {import('jest').Config} */
 const config = {
-  collectCoverage: false,
-
-  // An array of glob patterns indicating a set of files for which coverage information should be collected
   collectCoverageFrom: [
     '<rootDir>/src/**/*.ts',
     '!<rootDir>/src/main/**',
     '!<rootDir>/src/**/index.ts'
   ],
-
-  // The directory where Jest should output its coverage files
   coverageDirectory: 'coverage',
-
-  // Indicates which provider should be used to instrument code for coverage
   coverageProvider: 'babel',
-
-  // A map from regular expressions to module names or to arrays of module names that allow to stub out resources with a single module
   moduleNameMapper: {
     '@/tests/(.+)': '<rootDir>/tests/$1',
     '@/(.+)': '<rootDir>/src/$1'
   },
-
-  roots: ['<rootDir>/src', '<rootDir>/tests'],
-
-  // A map from regular expressions to paths to transformers
+  testMatch: ['**/*.spec.ts'],
+  roots: [
+    '<rootDir>/src',
+    '<rootDir>/tests'
+  ],
   transform: {
     '\\.ts$': 'ts-jest'
   },
-  clearMocks: true
+  clearMocks: true,
+  setupFiles: ['dotenv/config']
 }
 
 module.exports = config

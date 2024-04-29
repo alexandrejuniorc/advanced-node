@@ -28,6 +28,7 @@
     "jest-mock": "^29.7.0",
     "jest-mock-extended": "^3.0.6",
     "lint-staged": "^15.2.2",
+    "pg-mem": "1.9.11",
     "ts-jest": "^29.1.2",
     "typescript": "^5.4.5"
   },
@@ -35,7 +36,10 @@
     "axios": "^1.6.8",
     "jsonwebtoken": "^9.0.2",
     "module-alias": "^2.2.3",
-    "rimraf": "^5.0.5"
+    "pg": "^8.11.5",
+    "reflect-metadata": "^0.2.2",
+    "rimraf": "^5.0.5",
+    "typeorm": "0.2.29"
   },
   "engines": {
     "node": "20.x"
