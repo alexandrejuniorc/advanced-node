@@ -28,14 +28,17 @@ implements LoadUserAccountRepository, SaveFacebookAccountRepository {
   }
 
   async saveWithFacebook (params: SaveParams): Promise<SaveResult> {
+    let id: string
+
     if (params.id === undefined) {
       const postgresUser = await this.postgresUserRepository.save({
         email: params.email,
         name: params.name,
         facebookId: params.facebookId
       })
-      return { id: postgresUser.id.toString() }
+      id = postgresUser.id.toString()
     } else {
+      id = params.id
       await this.postgresUserRepository.update(
         {
           id: parseInt(params.id)
@@ -47,6 +50,6 @@ implements LoadUserAccountRepository, SaveFacebookAccountRepository {
       )
     }
 
-    return { id: params.id }
+    return { id }
   }
 }
