@@ -48,9 +48,35 @@ describe('PostgresUserAccountRepository', () => {
         facebookId: 'any_fb_id'
       })
 
-      const postgresUser = await postgresUserInfo.findOne({ email: 'any_email' })
+      const postgresUser = await postgresUserInfo.findOne({
+        email: 'any_email'
+      })
 
       expect(postgresUser?.id).toBe(1)
+    })
+
+    it('should update account if id is defined', async () => {
+      await postgresUserInfo.save({
+        email: 'any_email',
+        name: 'any_name',
+        facebookId: 'any_fb_id'
+      })
+
+      await sut.saveWithFacebook({
+        id: '1',
+        email: 'new_email',
+        name: 'new_name',
+        facebookId: 'new_fb_id'
+      })
+
+      const postgresUser = await postgresUserInfo.findOne({ id: 1 })
+
+      expect(postgresUser).toEqual({
+        id: 1,
+        email: 'any_email',
+        name: 'new_name',
+        facebookId: 'new_fb_id'
+      })
     })
   })
 })

@@ -26,12 +26,26 @@ implements LoadUserAccountRepository, SaveFacebookAccountRepository {
     params: SaveFacebookAccountRepository.Params
   ): Promise<SaveFacebookAccountRepository.Result> {
     const postgresUserRepository = getRepository(PostgresUser)
-    const postgresUser = await postgresUserRepository.save({
-      email: params.email,
-      name: params.name,
-      facebookId: params.facebookId
-    })
 
-    return { id: postgresUser.id.toString() }
+    if (params.id === undefined) {
+      const postgresUser = await postgresUserRepository.save({
+        email: params.email,
+        name: params.name,
+        facebookId: params.facebookId
+      })
+      return { id: postgresUser.id.toString() }
+    } else {
+      await postgresUserRepository.update(
+        {
+          id: parseInt(params.id)
+        },
+        {
+          name: params.name,
+          facebookId: params.facebookId
+        }
+      )
+    }
+
+    return { id: params.id }
   }
 }
