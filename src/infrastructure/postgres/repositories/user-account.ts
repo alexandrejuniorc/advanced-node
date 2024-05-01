@@ -1,8 +1,12 @@
-import { type LoadUserAccountRepository } from '@/data/contracts/repositories'
+import {
+  type SaveFacebookAccountRepository,
+  type LoadUserAccountRepository
+} from '@/data/contracts/repositories'
 import { getRepository } from 'typeorm'
 import { PostgresUser } from '../entities'
 
-export class PostgresUserAccountRepository implements LoadUserAccountRepository {
+export class PostgresUserAccountRepository
+implements LoadUserAccountRepository, SaveFacebookAccountRepository {
   async load (
     params: LoadUserAccountRepository.Params
   ): Promise<LoadUserAccountRepository.Result> {
@@ -16,5 +20,18 @@ export class PostgresUserAccountRepository implements LoadUserAccountRepository 
         name: postgresUser?.name ?? undefined
       }
     }
+  }
+
+  async saveWithFacebook (
+    params: SaveFacebookAccountRepository.Params
+  ): Promise<SaveFacebookAccountRepository.Result> {
+    const postgresUserRepository = getRepository(PostgresUser)
+    const postgresUser = await postgresUserRepository.save({
+      email: params.email,
+      name: params.name,
+      facebookId: params.facebookId
+    })
+
+    return { id: postgresUser.id.toString() }
   }
 }
